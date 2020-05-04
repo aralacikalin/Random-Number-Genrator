@@ -9,6 +9,7 @@ m=(2**31)-1
 
 randomNumbers=[]
 
+#function to create random numbers
 def generateRandom():
     global seed
     seed=(a*seed+c)%m
@@ -21,7 +22,8 @@ for i in range(100):
 copyrandomNumbers=randomNumbers.copy()
 randomNumbers.sort()
 
-print(randomNumbers)
+print(copyrandomNumbers)
+
 
 
 #this part here is for kolmogrov-smirnov test
