@@ -27,18 +27,20 @@ print(randomNumbers)
 #this part here is for kolmogrov-smirnov test
 
 
-dpluses=[]                                                      #array to store all d+ values
-dnegatives=[]                                                   #array to store all d- values
+dpluses=[]                                                          #array to store all d+ values
+dnegatives=[]                                                       #array to store all d- values
 for i in range(len(randomNumbers)):
-    dpluses.append(((i+1)/len(randomNumbers))-randomNumbers[i]) #i in the for loop starts from 0 thats why i need +1 here
-    dnegatives.append(randomNumbers[i]-((i)/len(randomNumbers)))   #i in the for loop starts from 0 thats why i dont need -1 here
-dpluses.sort()
-dnegatives.sort()
-dplus = dpluses[len(randomNumbers)-1]
-dnegative = dnegatives[len(randomNumbers)-1]
-d=max(dplus,dnegative)
+    dpluses.append(((i+1)/len(randomNumbers))-randomNumbers[i])     #i in the for loop starts from 0 thats why i need +1 here
+    dnegatives.append(randomNumbers[i]-((i)/len(randomNumbers)))    #i in the for loop starts from 0 thats why i dont need -1 here
 
-dalpha=1.36/math.sqrt(len(randomNumbers)) #alpha value
+
+dpluses.sort()                                                      #sorting the array so we can get the max
+dnegatives.sort()                                                   #sorting the array so we can get the max
+dplus = dpluses[len(randomNumbers)-1]                               #getting the max         
+dnegative = dnegatives[len(randomNumbers)-1]                        #getting the max
+d=max(dplus,dnegative)                                              #getting the max
+
+dalpha=1.36/math.sqrt(len(randomNumbers))                           #alpha value
 
 if(dalpha>d):
     print("numbers are uniform for alpha level of 0.05")
@@ -56,16 +58,26 @@ runCount=0
 #loop for counting runs
 for i in range(1,len(copyrandomNumbers)):
     num=copyrandomNumbers[i]
-    if currentRunType!=None:
-        if (num>copyrandomNumbers[i-1]):
-            if(currentRunType=="-"):
-                currentRunType="+"
+    if currentRunType!=None:                #if it is not the first 2 elements this block runs
+
+        if (num>copyrandomNumbers[i-1]):    #checks if the current element is greater than the previous element
+            if(currentRunType=="-"):        #then checks if it runs down if it runs down it means now its running up
+                
+                currentRunType="+"          #thats why we change the run type
+
+                runCount+=1                 #and increment the run count
+            #there is not a else block because
+            #if current run type is up we are continuing the run and there is no change in the run type
+        
+        else:                               #if previous number is greater than the current element 
+
+            if(currentRunType=="+"):        #if it is running up that means now it started to run down
+                currentRunType="-"          #so we change the run type and increment the counter
                 runCount+=1
-        else:
-            if(currentRunType=="+"):
-                currentRunType="-"
-                runCount+=1
-    else:                                   #
+            #there is not a else block because
+            #if current run type is down we are continuing the run and there is no change in the run type
+
+    else:                                   # if we are checking the first 2 elements then this else block runs
         if(num>copyrandomNumbers[i-1]):
             currentRunType="+"
         else:
